@@ -2,14 +2,17 @@ from flask import Flask, render_template
 from common.database import Database
 from camera import take_picture
 from facial_recognition import do_recognition
+import os
 import datetime
 import time
 
-__author__ = 'lulis'
-
+__author__ = 'lucas'
 app = Flask(__name__)
-app.secret_key = "123"
-base_picture = "static/known_people/Lucas.png"
+
+base_pictures = []
+for root, dirs, files in os.walk("static/known_people/"):
+    for filename in files:
+        base_pictures.append(root+filename)
 
 @app.before_first_request
 def init_db():
@@ -30,7 +33,11 @@ def insert_photo_e():
 @app.route('/welcome')
 def welcome():
     new_picture = take_picture()
-    user_name = do_recognition(base_picture, new_picture)
+    match = False
+    for base_picture in base_pictures: 
+        user_name, match = do_recognition(base_picture, new_picture)
+        if match == True:
+            break
     entry_time = str(datetime.datetime.now())[:-7]
     data = {"user": user_name, "entry_time": entry_time, "photo": new_picture}
     Database.insert("entries", data)
@@ -40,7 +47,11 @@ def welcome():
 @app.route('/bye')
 def bye():
     new_picture = take_picture()
-    user_name = do_recognition(base_picture, new_picture)
+    match = False
+    for base_picture in base_pictures: 
+        user_name, match = do_recognition(base_picture, new_picture)
+        if match == True:
+            break
     exit_time = str(datetime.datetime.now())[:-7]
     data = {"user": user_name, "exit_time": exit_time, "photo": new_picture}
     Database.insert("exits", data)

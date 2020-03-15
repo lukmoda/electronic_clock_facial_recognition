@@ -1,7 +1,6 @@
 import pymongo
 
-__author__ = 'Lulis'
-
+__author__ = 'lucas'
 
 class Database(object):
     URI = "mongodb://127.0.0.1:27017"

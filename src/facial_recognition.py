@@ -12,6 +12,7 @@ def do_recognition(base_picture, new_picture):
 
     if results[0] == True:
         base = os.path.basename(base_picture)
-        return(os.path.splitext(base)[0])
+        return(os.path.splitext(base)[0], True)
     else:
-        return("User not identified")
+        return("User not identified", False)
+    
