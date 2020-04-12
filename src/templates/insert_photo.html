@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+    <script>
+        function toggleText() {
+        var text = document.getElementById("load");
+        if (text.style.display === "none") {
+            text.style.display = "block";
+        } else {
+            text.style.display = "none";
+        }
+        }
+    </script>
+    <div>
+        <p> Posicione-se na câmera e tire sua foto.</p>
+        <p> This is the status {{status}}</p>
+        {% if status == 'entry' %}
+            <p><a class="btn btn-primary btn-lg" onclick="toggleText()" href="{{ url_for('welcome') }}" role="button">Tirar foto</a></p>
+        {% else %}
+            <p><a class="btn btn-primary btn-lg" onclick="toggleText()" href="{{ url_for('bye') }}" role="button">Tirar foto</a></p>
+        {% endif %}
+    </div>
+        <p id='load' style='display: none'>Realizando reconhecimento. Aguarde...</p>     
+{% endblock %}
